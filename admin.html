@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrator Oversight Portal | Campus Skill Progress</title>
+  
+  <!-- Modern Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Base Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      background-color: #0b0f19;
+      color: #f8fafc;
+    }
+    .admin-topbar {
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .admin-brand h1 {
+      font-size: 19px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.2;
+    }
+    .admin-brand span {
+      font-size: 11px;
+      color: #f59e0b;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 700;
+    }
+    .admin-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 24px 60px;
+    }
+    .progress-highlight-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #334155;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .doubt-admin-row {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .badge-status-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+    }
+    .badge-status-dot.answered {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-status-dot.pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Admin Bar -->
+  <header class="admin-topbar">
+    <div class="admin-brand">
+      <div class="admin-badge-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div>
+        <h1>SkillExchange Master Console</h1>
+        <span>Administrator Oversight & Student Progress Center</span>
+      </div>
+    </div>
+
+    <div class="admin-top-actions">
+      <span style="font-size: 12.5px; color: #10b981; display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-circle" style="font-size: 9px;"></i> Node Express API Online
+      </span>
+      <a href="/" class="btn-hero-secondary" style="background:#1e293b; color:#cbd5e1; border-color:#334155; padding:7px 16px; font-size:13px; text-decoration:none;">
+        <i class="fa-solid fa-arrow-left"></i> View Student Portal
+      </a>
+      <button class="btn-action-sm danger" id="btn-admin-logout" style="padding:7px 14px; font-size:13px;">
+        <i class="fa-solid fa-power-off"></i> Sign Out
+      </button>
+    </div>
+  </header>
+
+  <div class="admin-container">
+
+    <!-- Admin Access Barrier (shown if not logged in as Admin) -->
+    <div id="admin-gate-login" class="locked-gate-box" style="max-width: 520px; margin: 60px auto; background: #0f172a; border-color: #334155; color: white;">
+      <div class="locked-gate-icon" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h3 style="color: white;">Restricted Administrator Gateway</h3>
+      <p style="color: #94a3b8;">
+        Authorized access only. Enter administrative credentials to inspect student skill activities, monitor video tutorials, and oversee doubt discussions.
+      </p>
+
+      <form id="admin-auth-form" style="text-align: left; margin-top: 24px;">
+        <div class="form-group">
+          <label style="color: #cbd5e1;">Username or Admin Email</label>
+          <input id="admin-user-input" class="form-control" type="text" placeholder="Enter admin username or email" required autocomplete="off" style="background: #1e293b; color: white; border-color: #334155;">
+        </div>
+        <div class="form-group">
+          <label style="color: #cbd5e1;">Password</label>
+          <input id="admin-pass-input" class="form-control" type="password" placeholder="Enter password" required autocomplete="off" style="background: #1e293b; color: white; border-color: #334155;">
+        </div>
+
+        <button type="submit" class="btn-submit-action" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; margin-top: 10px;">
+          <i class="fa-solid fa-unlock"></i> Authenticate & Enter Console
+        </button>
+      </form>
+    </div>
+
+    <!-- Admin Master Dashboard (Shown once authenticated) -->
+    <div id="admin-dashboard-view" class="hidden">
+
+      <!-- Navigation Tabs -->
+      <div class="admin-nav-tabs">
+        <button class="admin-tab-btn active" data-tab="overview">
+          <i class="fa-solid fa-chart-line"></i> Progress & Analytics
+        </button>
+        <button class="admin-tab-btn" data-tab="videos">
+          <i class="fa-solid fa-video"></i> Video Lessons & Learning Progress
+        </button>
+        <button class="admin-tab-btn" data-tab="doubts">
+          <i class="fa-solid fa-comments"></i> Student Doubts & Q&A Oversight
+        </button>
+        <button class="admin-tab-btn" data-tab="requests">
+          <i class="fa-solid fa-list-check"></i> Manage Learning Requests
+        </button>
+        <button class="admin-tab-btn" data-tab="users">
+          <i class="fa-solid fa-users-gear"></i> Students & Role Directory
+        </button>
+        <button class="admin-tab-btn" data-tab="broadcast">
+          <i class="fa-solid fa-bullhorn"></i> Campus Notice & Audit Log
+        </button>
+      </div>
+
+      <!-- ==========================================
+           TAB 1: PROGRESS & ANALYTICS
+           ========================================== -->
+      <div id="view-overview" class="admin-subview">
+        <!-- 8 High-Impact KPI Cards -->
+        <div class="admin-kpi-grid">
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <h3 id="stat-total-users">0</h3>
+              <p>Registered Students</p>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div>
+              <h3 id="stat-total-skills">0</h3>
+              <p>Active Skills in Catalog</p>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon" style="color:#ef4444; background:rgba(239, 68, 68, 0.15);"><i class="fa-solid fa-video"></i></div>
+            <div>
+              <h3 id="stat-total-videos">0</h3>
+              <p>Video Lessons Uploaded</p>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon" style="color:#0ea5e9; background:rgba(14, 165, 233, 0.15);"><i class="fa-solid fa-eye"></i></div>
+            <div>
+              <h3 id="stat-total-views">0</h3>
+              <p>Lesson Views Clocked</p>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon" style="color:#8b5cf6; background:rgba(139, 92, 246, 0.15);"><i class="fa-solid fa-comments"></i></div>
+            <div>
+              <h3 id="stat-total-doubts">0</h3>
+              <p>Doubts Asked by Students</p>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon" style="color:#10b981; background:rgba(16, 185, 129, 0.15);"><i class="fa-solid fa-check-double"></i></div>
+            <div>
+              <h3 id="stat-answered-doubts">0</h3>
+              <p>Doubts Answered</p>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon"><i class="fa-solid fa-lightbulb"></i></div>
+            <div>
+              <h3 id="stat-total-requests">0</h3>
+              <p>Open Learning Requests</p>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon" style="color:#ec4899; background:rgba(236, 72, 153, 0.15);"><i class="fa-solid fa-handshake"></i></div>
+            <div>
+              <h3 id="stat-total-connections">0</h3>
+              <p>Mentorship Connections</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Breakdown Progress Panels -->
+        <div class="admin-breakdown-row">
+          <div class="admin-panel">
+            <h4><i class="fa-solid fa-chart-pie" style="color:#f59e0b;"></i> Category Domain Distribution</h4>
+            <div id="overview-category-bars"></div>
+          </div>
+
+          <div class="admin-panel">
+            <h4><i class="fa-solid fa-layer-group" style="color:#0ea5e9;"></i> Mentor Proficiency Breakdown</h4>
+            <div id="overview-level-bars"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 2: VIDEO LESSONS & PROGRESS
+           ========================================== -->
+      <div id="view-videos" class="admin-subview hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <h3 style="font-size: 19px; color: white;">Student Video Lessons & Learning Progress</h3>
+            <p style="font-size: 13px; color: #94a3b8;">Monitor all skills published with video tutorials, watch counts, and student doubts.</p>
+          </div>
+          <button class="btn-action-sm" id="btn-refresh-progress"><i class="fa-solid fa-rotate-right"></i> Refresh Table</button>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Skill / Course Title</th>
+                <th>Student Mentor</th>
+                <th>Category</th>
+                <th>Video Status</th>
+                <th>Views</th>
+                <th>Doubts Count</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-videos-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 3: STUDENT DOUBTS & Q&A OVERSIGHT
+           ========================================== -->
+      <div id="view-doubts" class="admin-subview hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <h3 style="font-size: 19px; color: white;">Student Doubts & Discussion Oversight</h3>
+            <p style="font-size: 13px; color: #94a3b8;">Track all questions asked beside video lessons and monitor mentor response rates.</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <select id="doubts-filter-status" class="form-control" style="background:#1e293b; color:white; border-color:#334155; font-size:13px; width:auto;">
+              <option value="all">All Questions</option>
+              <option value="answered">Answered Questions</option>
+              <option value="pending">Pending Answers</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="admin-doubts-list-container">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 4: MANAGE REQUESTS
+           ========================================== -->
+      <div id="view-requests" class="admin-subview hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 19px; color: white;">Student Learning Requests</h3>
+          <span style="font-size: 13px; color: #94a3b8;" id="admin-requests-counter">0 requests</span>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Skill Needed</th>
+                <th>Requested By</th>
+                <th>Date Posted</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-requests-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 5: STUDENTS DIRECTORY & ROLES
+           ========================================== -->
+      <div id="view-users" class="admin-subview hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 19px; color: white;">Student Community & Role Management</h3>
+          <span style="font-size: 13px; color: #94a3b8;" id="admin-users-counter">0 students</span>
+        </div>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Campus Email</th>
+                <th>Current Role</th>
+                <th>Skills & Videos</th>
+                <th>Requests</th>
+                <th>Joined Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 6: CAMPUS NOTICE & AUDIT LOG
+           ========================================== -->
+      <div id="view-broadcast" class="admin-subview hidden">
+        <div class="admin-breakdown-row">
+          <!-- Broadcast Notice Form -->
+          <div class="admin-panel">
+            <h4><i class="fa-solid fa-bullhorn" style="color:#f59e0b;"></i> Campus-Wide Broadcast Notice</h4>
+            <p style="font-size: 13px; color:#94a3b8; margin-bottom: 14px;">
+              Publish an alert banner that appears at the very top of all student portal pages in real time.
+            </p>
+            <form id="admin-notice-form">
+              <textarea id="notice-text-input" rows="3" class="form-control" placeholder="Type campus announcement..." style="background:#0f172a; color:white; border-color:#334155; margin-bottom:12px;"></textarea>
+              <label style="color: #cbd5e1; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 14px; cursor:pointer;">
+                <input type="checkbox" id="notice-active-checkbox" checked>
+                <span>Notice Active & Visible to Students</span>
+              </label>
+              <button type="submit" class="btn-action-sm success" style="padding: 9px 18px; font-size: 13px;">
+                <i class="fa-solid fa-check"></i> Save & Broadcast to Students
+              </button>
+            </form>
+          </div>
+
+          <!-- Platform Audit Timeline -->
+          <div class="admin-panel">
+            <h4><i class="fa-solid fa-clock-rotate-left" style="color:#0ea5e9;"></i> Live Student Skill Portal Audit Trail</h4>
+            <div id="admin-audit-stream" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Dedicated Admin Script -->
+  <script>
+    let currentAdminUser = null;
+    let cachedProgressData = null;
+
+    function showAdminToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}"></i> <span>${msg}</span>`;
+      container.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3500);
+    }
+
+    function checkAdminSession() {
+      try {
+        const raw = localStorage.getItem('skillExchangeUser') || localStorage.getItem('currentUser');
+        if (raw) {
+          const user = JSON.parse(raw);
+          if (user.role === 'admin') {
+            currentAdminUser = user;
+          }
+        }
+      } catch (e) {
+        currentAdminUser = null;
+      }
+      renderAdminState();
+    }
+
+    function renderAdminState() {
+      const gate = document.getElementById('admin-gate-login');
+      const dash = document.getElementById('admin-dashboard-view');
+      const logoutBtn = document.getElementById('btn-admin-logout');
+
+      if (currentAdminUser) {
+        if (gate) gate.classList.add('hidden');
+        if (dash) dash.classList.remove('hidden');
+        if (logoutBtn) logoutBtn.classList.remove('hidden');
+        loadAllAdminData();
+      } else {
+        if (gate) gate.classList.remove('hidden');
+        if (dash) dash.classList.add('hidden');
+        if (logoutBtn) logoutBtn.classList.add('hidden');
+      }
+    }
+
+    // Tab Switching
+    const adminTabBtns = document.querySelectorAll('.admin-tab-btn');
+    const adminViews = {
+      overview: document.getElementById('view-overview'),
+      videos: document.getElementById('view-videos'),
+      doubts: document.getElementById('view-doubts'),
+      requests: document.getElementById('view-requests'),
+      users: document.getElementById('view-users'),
+      broadcast: document.getElementById('view-broadcast')
+    };
+
+    adminTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        adminTabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === target));
+        Object.keys(adminViews).forEach(k => {
+          if (adminViews[k]) adminViews[k].classList.toggle('hidden', k !== target);
+        });
+      });
+    });
+
+    // Login Submission
+    const authForm = document.getElementById('admin-auth-form');
+    if (authForm) {
+      authForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const usernameOrEmail = document.getElementById('admin-user-input').value.trim();
+        const password = document.getElementById('admin-pass-input').value;
+
+        try {
+          const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usernameOrEmail, password, portalType: 'admin' })
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            currentAdminUser = data.user;
+            localStorage.setItem('skillExchangeUser', JSON.stringify(data.user));
+            showAdminToast(`Welcome, Administrator ${data.user.name}!`, 'success');
+            renderAdminState();
+          } else {
+            showAdminToast(data.error || 'Access denied.', 'error');
+          }
+        } catch (err) {
+          showAdminToast('Failed to connect to authentication server.', 'error');
+        }
+      });
+    }
+
+    // Logout
+    const logoutBtn = document.getElementById('btn-admin-logout');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        currentAdminUser = null;
+        localStorage.removeItem('skillExchangeUser');
+        showAdminToast('Signed out from Administrator Suite.', 'info');
+        renderAdminState();
+      });
+    }
+
+    async function loadAllAdminData() {
+      await Promise.all([
+        loadProgressData(),
+        loadOverviewAnalytics(),
+        loadUsersTable(),
+        loadRequestsTable()
+      ]);
+    }
+
+    async function loadProgressData() {
+      try {
+        const res = await fetch('/api/admin/progress');
+        const data = await res.json();
+        cachedProgressData = data;
+
+        // Populate KPIs
+        const s = data.summary;
+        document.getElementById('stat-total-users').textContent = s.totalUsers || 0;
+        document.getElementById('stat-total-skills').textContent = s.totalSkills || 0;
+        document.getElementById('stat-total-videos').textContent = s.totalVideos || 0;
+        document.getElementById('stat-total-views').textContent = s.totalVideoViews || 0;
+        document.getElementById('stat-total-doubts').textContent = s.totalDoubts || 0;
+        document.getElementById('stat-answered-doubts').textContent = s.answeredDoubts || 0;
+        document.getElementById('stat-total-requests').textContent = s.totalRequests || 0;
+        document.getElementById('stat-total-connections').textContent = s.totalConnections || 0;
+
+        // Populate Videos Table
+        renderVideosTable(data.skillsProgress || []);
+
+        // Populate Doubts List
+        renderDoubtsList(data.allDoubts || []);
+
+        // Populate Audit Stream
+        renderAuditStream(data.recentAuditLogs || []);
+      } catch (err) {
+        console.error('Failed to load progress data:', err);
+      }
+    }
+
+    function renderVideosTable(skills) {
+      const tbody = document.getElementById('admin-videos-table-body');
+      if (!tbody) return;
+
+      if (!skills.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px; color:#94a3b8;">No skills published yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = skills.map(s => `
+        <tr>
+          <td style="color:#94a3b8;">#${s.id}</td>
+          <td><strong>${escapeHtml(s.skillName)}</strong></td>
+          <td>${escapeHtml(s.mentorName)}</td>
+          <td><span class="badge-tag" style="background:#334155; color:#cbd5e1;">${escapeHtml(s.category)}</span></td>
+          <td>
+            <span class="badge-tag" style="background:#fee2e2; color:#b91c1c;">
+              <i class="fa-solid fa-play"></i> Video (${escapeHtml(s.videoDuration)})
+            </span>
+          </td>
+          <td><strong>${s.viewsCount}</strong></td>
+          <td>
+            <span>${s.doubtsCount} questions</span> 
+            <span style="color:#34d399; font-size:11px;">(${s.answeredCount} answered)</span>
+          </td>
+          <td>
+            <button class="btn-action-sm danger" onclick="deleteSkillByAdmin(${s.id}, '${escapeJs(s.skillName)}')">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderDoubtsList(doubts) {
+      const container = document.getElementById('admin-doubts-list-container');
+      if (!container) return;
+
+      const filterStatus = document.getElementById('doubts-filter-status')?.value || 'all';
+      let filtered = doubts;
+      if (filterStatus === 'answered') filtered = doubts.filter(d => d.status === 'answered' || (d.replies && d.replies.length > 0));
+      if (filterStatus === 'pending') filtered = doubts.filter(d => d.status !== 'answered' && (!d.replies || !d.replies.length));
+
+      if (!filtered.length) {
+        container.innerHTML = '<div class="empty-state-notice" style="background:#1e293b; color:#94a3b8;">No doubts found matching filter.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(d => {
+        const isAnswered = d.status === 'answered' || (d.replies && d.replies.length > 0);
+        return `
+          <div class="doubt-admin-row">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:white; font-size:14.5px;">Skill: ${escapeHtml(d.skillName || 'Course')}</strong>
+                <span style="color:#94a3b8; font-size:12.5px; margin-left:8px;">(Instructor: ${escapeHtml(d.mentorName || '-')})</span>
+              </div>
+              <span class="badge-status-dot ${isAnswered ? 'answered' : 'pending'}">
+                <i class="fa-solid fa-circle" style="font-size:7px;"></i> ${isAnswered ? 'Answered' : 'Pending'}
+              </span>
+            </div>
+
+            <div style="background:#0f172a; padding:10px 14px; border-radius:6px; margin-top:4px;">
+              <div style="font-size:12px; color:#38bdf8; font-weight:700;">Student: ${escapeHtml(d.studentName)} (${d.createdAt})</div>
+              <div style="font-size:13.5px; color:#f1f5f9; margin-top:3px;">"${escapeHtml(d.question)}"</div>
+            </div>
+
+            ${d.replies && d.replies.length ? `
+              <div style="margin-top:6px; padding-left:14px; border-left:2px solid #8b5cf6;">
+                <span style="font-size:11.5px; color:#c084fc; font-weight:700;">Replies / Answers:</span>
+                ${d.replies.map(r => `
+                  <div style="font-size:12.5px; color:#cbd5e1; margin-top:2px;">
+                    <strong>${escapeHtml(r.authorName)}:</strong> "${escapeHtml(r.text)}"
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    const doubtsFilterSelect = document.getElementById('doubts-filter-status');
+    if (doubtsFilterSelect) {
+      doubtsFilterSelect.addEventListener('change', () => {
+        if (cachedProgressData) renderDoubtsList(cachedProgressData.allDoubts || []);
+      });
+    }
+
+    function renderAuditStream(logs) {
+      const container = document.getElementById('admin-audit-stream');
+      if (!container) return;
+      if (!logs.length) {
+        container.innerHTML = '<div style="color:#94a3b8; font-size:13px;">No audit events yet.</div>';
+        return;
+      }
+      container.innerHTML = logs.map(l => `
+        <div style="background:#0f172a; padding:8px 12px; border-radius:6px; font-size:12.5px; border-left:3px solid #0ea5e9; display:flex; justify-content:space-between;">
+          <span style="color:#f1f5f9;">${escapeHtml(l.message)}</span>
+          <span style="color:#94a3b8; font-size:11px; margin-left:10px;">${l.timestamp}</span>
+        </div>
+      `).join('');
+    }
+
+    async function loadOverviewAnalytics() {
+      try {
+        const res = await fetch('/api/admin/overview');
+        const data = await res.json();
+
+        // Category breakdown
+        const catContainer = document.getElementById('overview-category-bars');
+        if (catContainer && data.categoryBreakdown) {
+          const total = data.stats.totalSkills || 1;
+          catContainer.innerHTML = Object.entries(data.categoryBreakdown).map(([cat, count]) => {
+            const pct = Math.round((count / total) * 100);
+            return `
+              <div class="progress-item-bar">
+                <div class="progress-label-wrap">
+                  <span>${escapeHtml(cat)}</span>
+                  <span>${count} skills (${pct}%)</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: ${pct}%; background: linear-gradient(90deg, #6366f1, #a855f7);"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Level breakdown
+        const levelContainer = document.getElementById('overview-level-bars');
+        if (levelContainer && data.levelBreakdown) {
+          const total = data.stats.totalSkills || 1;
+          levelContainer.innerHTML = Object.entries(data.levelBreakdown).map(([lvl, count]) => {
+            const pct = Math.round((count / total) * 100);
+            let c = '#10b981';
+            if (lvl === 'Intermediate') c = '#f59e0b';
+            if (lvl === 'Advanced') c = '#8b5cf6';
+            return `
+              <div class="progress-item-bar">
+                <div class="progress-label-wrap">
+                  <span>${escapeHtml(lvl)}</span>
+                  <span>${count} courses (${pct}%)</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: ${pct}%; background: ${c};"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Announcement
+        if (data.announcement) {
+          const ti = document.getElementById('notice-text-input');
+          const cb = document.getElementById('notice-active-checkbox');
+          if (ti) ti.value = data.announcement.text || '';
+          if (cb) cb.checked = !!data.announcement.active;
+        }
+      } catch (err) {
+        console.error('Failed to load overview analytics:', err);
+      }
+    }
+
+    async function loadUsersTable() {
+      const tbody = document.getElementById('admin-users-tbody');
+      const counter = document.getElementById('admin-users-counter');
+      if (!tbody) return;
+
+      try {
+        const res = await fetch('/api/admin/users');
+        const users = await res.json();
+        if (counter) counter.textContent = `${users.length} registered accounts`;
+
+        tbody.innerHTML = users.map(u => {
+          const isRoot = u.name === 'Admin Officer' || u.email === 'admin@campus.edu';
+          return `
+            <tr>
+              <td><strong>${escapeHtml(u.name)}</strong></td>
+              <td style="color:#cbd5e1;">${escapeHtml(u.email || '-')}</td>
+              <td>
+                <span class="badge-role-tag" style="background:${u.role === 'admin' ? '#fef3c7; color:#b45309;' : '#eef2ff; color:#4f46e5;'}">
+                  ${u.role}
+                </span>
+              </td>
+              <td>${u.skillsCount || 0}</td>
+              <td>${u.requestsCount || 0}</td>
+              <td style="color:#94a3b8;">${u.joinedAt || '2026-11-01'}</td>
+              <td>
+                ${!isRoot ? `
+                  <button class="btn-action-sm" onclick="toggleUserRole('${u.id}', '${u.role === 'admin' ? 'student' : 'admin'}')">
+                    Make ${u.role === 'admin' ? 'Student' : 'Admin'}
+                  </button>
+                  <button class="btn-action-sm danger" onclick="deleteUserByAdmin('${u.id}', '${escapeJs(u.name)}')">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                ` : '<span style="font-size:11px; color:#f59e0b; font-weight:700;">Protected Root</span>'}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Failed to load users table:', err);
+      }
+    }
+
+    async function loadRequestsTable() {
+      const tbody = document.getElementById('admin-requests-tbody');
+      const counter = document.getElementById('admin-requests-counter');
+      if (!tbody) return;
+
+      try {
+        const res = await fetch('/api/requests');
+        const reqs = await res.json();
+        if (counter) counter.textContent = `${reqs.length} open requests`;
+
+        if (!reqs.length) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#94a3b8;">No requests currently active.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = reqs.map(r => `
+          <tr>
+            <td style="color:#94a3b8;">#${r.id}</td>
+            <td><strong>${escapeHtml(r.skillNeeded)}</strong></td>
+            <td>${escapeHtml(r.studentName)}</td>
+            <td>${r.createdAt || 'Recent'}</td>
+            <td>
+              <button class="btn-action-sm danger" onclick="deleteRequestByAdmin(${r.id}, '${escapeJs(r.skillNeeded)}')">
+                <i class="fa-solid fa-trash"></i> Remove
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error('Failed to load requests table:', err);
+      }
+    }
+
+    window.deleteSkillByAdmin = async function(id, title) {
+      if (!confirm(`Delete skill "${title}"?`)) return;
+      try {
+        const res = await fetch(`/api/skills/${id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ requester: currentAdminUser.name, role: 'admin' })
+        });
+        if (res.ok) {
+          showAdminToast(`Skill "${title}" deleted.`, 'success');
+          loadProgressData();
+        }
+      } catch (err) {
+        showAdminToast('Failed to delete skill.', 'error');
+      }
+    };
+
+    window.deleteRequestByAdmin = async function(id, title) {
+      if (!confirm(`Delete request "${title}"?`)) return;
+      try {
+        const res = await fetch(`/api/requests/${id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ requester: currentAdminUser.name, role: 'admin' })
+        });
+        if (res.ok) {
+          showAdminToast(`Request deleted.`, 'success');
+          loadRequestsTable();
+          loadProgressData();
+        }
+      } catch (err) {
+        showAdminToast('Failed to delete request.', 'error');
+      }
+    };
+
+    window.toggleUserRole = async function(id, newRole) {
+      try {
+        const res = await fetch(`/api/admin/users/${id}/role`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ newRole })
+        });
+        if (res.ok) {
+          showAdminToast(`User role updated to ${newRole}.`, 'success');
+          loadUsersTable();
+        }
+      } catch (err) {
+        showAdminToast('Failed to update user role.', 'error');
+      }
+    };
+
+    window.deleteUserByAdmin = async function(id, name) {
+      if (!confirm(`Permanently delete student account "${name}"?`)) return;
+      try {
+        const res = await fetch(`/api/admin/users/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          showAdminToast(`User "${name}" deleted.`, 'success');
+          loadUsersTable();
+          loadProgressData();
+        }
+      } catch (err) {
+        showAdminToast('Failed to delete user.', 'error');
+      }
+    };
+
+    // Notice Form
+    const noticeForm = document.getElementById('admin-notice-form');
+    if (noticeForm) {
+      noticeForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const text = document.getElementById('notice-text-input').value.trim();
+        const active = document.getElementById('notice-active-checkbox').checked;
+
+        try {
+          const res = await fetch('/api/admin/announcement', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, active })
+          });
+          if (res.ok) {
+            showAdminToast('Broadcast announcement updated live!', 'success');
+          }
+        } catch (err) {
+          showAdminToast('Failed to save announcement.', 'error');
+        }
+      });
+    }
+
+    const refreshProgressBtn = document.getElementById('btn-refresh-progress');
+    if (refreshProgressBtn) {
+      refreshProgressBtn.addEventListener('click', () => {
+        loadProgressData();
+        showAdminToast('Progress table updated!', 'success');
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function escapeJs(str) {
+      if (!str) return '';
+      return String(str).replace(/'/g, "\\'").replace(/"/g, '\\"');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAdminSession();
+    });
+  </script>
+</body>
+</html>

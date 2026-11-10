@@ -1,0 +1,474 @@
+{
+  "skills": [
+    {
+      "id": 1,
+      "skillName": "HTML & CSS Responsive Web Design",
+      "studentName": "Hemanth",
+      "category": "Programming",
+      "level": "Intermediate",
+      "description": "I can help you master modern HTML5, Flexbox, CSS Grid, and responsive web layouts. I have experience building full sites and can review your code.",
+      "videoUrl": "https://www.youtube.com/embed/mU6anWqZJcc",
+      "videoDuration": "25 mins",
+      "syllabus": [
+        "HTML5 Semantic Tags & Document Structure",
+        "Modern CSS Selectors & Box Model",
+        "Flexbox Layouts & Responsive Navbars",
+        "CSS Grid Architecture & Media Queries"
+      ],
+      "viewsCount": 69,
+      "doubts": [
+        {
+          "id": 1794128509089,
+          "studentName": "Raghava",
+          "studentAvatar": "R",
+          "question": "How do CSS Grid areas work with responsive design?",
+          "createdAt": "2026-11-08 09:01",
+          "status": "answered",
+          "replies": [
+            {
+              "id": 1794128509126,
+              "authorName": "Hemanth (Mentor)",
+              "isMentor": true,
+              "text": "You can define grid-template-areas with named zones and rearrange them inside media queries!",
+              "createdAt": "2026-11-08 09:01"
+            }
+          ]
+        },
+        {
+          "id": 201,
+          "studentName": "Raghava",
+          "studentAvatar": "RG",
+          "question": "When should I use CSS Grid instead of Flexbox for page layouts?",
+          "createdAt": "2026-11-06 14:20",
+          "status": "answered",
+          "replies": [
+            {
+              "id": 301,
+              "authorName": "Hemanth (Mentor)",
+              "isMentor": true,
+              "text": "Great question! Flexbox is 1-dimensional (row OR column), ideal for navbars or card content. CSS Grid is 2-dimensional (rows AND columns simultaneously), ideal for whole-page layouts.",
+              "createdAt": "2026-11-06 15:05"
+            },
+            {
+              "id": 1794128688776,
+              "authorName": "Raghava",
+              "isMentor": false,
+              "text": "hi",
+              "createdAt": "2026-11-08 09:04"
+            }
+          ]
+        },
+        {
+          "id": 202,
+          "studentName": "Meera",
+          "studentAvatar": "MR",
+          "question": "How do media queries handle mobile screens with high pixel density?",
+          "createdAt": "2026-11-07 10:45",
+          "status": "answered",
+          "replies": [
+            {
+              "id": 302,
+              "authorName": "Hemanth (Mentor)",
+              "isMentor": true,
+              "text": "Media queries look at CSS viewport pixels, not hardware device pixels, so a 390px mobile viewport triggers the mobile breakpoint regardless of retina 3x pixel ratio.",
+              "createdAt": "2026-11-07 11:30"
+            }
+          ]
+        },
+        {
+          "id": 1794129428152,
+          "studentName": "Raghava",
+          "studentAvatar": "R",
+          "question": "Hey Hemanth, does CSS Grid have any performance impact on mobile?",
+          "createdAt": "02:47 pm",
+          "status": "answered",
+          "replies": [
+            {
+              "id": 1794129428177,
+              "authorName": "Hemanth (Mentor)",
+              "isMentor": true,
+              "text": "Thanks for asking! I'm reviewing your question on \"HTML & CSS Responsive Web Design\". Feel free to also send me a 1-on-1 mentorship request if you want a detailed review!",
+              "createdAt": "02:47 pm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "skillName": "UI/UX Design in Figma & Prototyping",
+      "studentName": "Sarah",
+      "category": "Design",
+      "level": "Advanced",
+      "description": "Master wireframing, color harmony, typography, and interactive prototyping in Figma. Great for beginners aiming to design mobile and web interfaces.",
+      "videoUrl": "https://www.youtube.com/embed/c9Wg6Cb_YlU",
+      "videoDuration": "32 mins",
+      "syllabus": [
+        "Figma Interface, Canvas & Frame Basics",
+        "Auto-Layout & Responsive Constraints",
+        "Component Variants & Design Tokens",
+        "Interactive Smart Animate Prototyping"
+      ],
+      "viewsCount": 94,
+      "doubts": [
+        {
+          "id": 203,
+          "studentName": "Mahith",
+          "studentAvatar": "MH",
+          "question": "What is the fastest way to align nested cards with Auto-Layout without breaking spacing?",
+          "createdAt": "2026-11-06 16:15",
+          "status": "answered",
+          "replies": [
+            {
+              "id": 303,
+              "authorName": "Sarah (Mentor)",
+              "isMentor": true,
+              "text": "Always set the parent frame to Auto-Layout (Shift + A), then set children to 'Fill Container' horizontally. That way padding remains consistent across different device sizes!",
+              "createdAt": "2026-11-06 17:00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "skillName": "Premiere Pro Video Editing & Color Grading",
+      "studentName": "Arjun",
+      "category": "Video Editing",
+      "level": "Beginner",
+      "description": "Learn timeline pacing, audio syncing, B-roll transitions, and cinematic color correction in Adobe Premiere Pro.",
+      "videoUrl": "https://www.youtube.com/embed/u5lhspA4nL4",
+      "videoDuration": "20 mins",
+      "syllabus": [
+        "Workspace Setup & Importing Footage",
+        "J-Cuts, L-Cuts & Audio Normalization",
+        "Lumetri Color Grading & LUT Application",
+        "High Quality YouTube/Vimeo Export Presets"
+      ],
+      "viewsCount": 51,
+      "doubts": [
+        {
+          "id": 204,
+          "studentName": "Ananya",
+          "studentAvatar": "AN",
+          "question": "My audio has background hum. What is the best audio effect in Premiere to clean it?",
+          "createdAt": "2026-11-07 13:10",
+          "status": "answered",
+          "replies": [
+            {
+              "id": 304,
+              "authorName": "Arjun (Mentor)",
+              "isMentor": true,
+              "text": "Use the 'DeNoise' effect under Effects > Audio Effects! Dial the amount to around 15-20% so you eliminate hum without distorting your voice.",
+              "createdAt": "2026-11-07 14:00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "skillName": "Full Stack MERN App Architecture",
+      "studentName": "Raghava",
+      "category": "Programming",
+      "level": "Intermediate",
+      "description": "Hands-on guidance on MongoDB, Express, React, and Node.js. Can help you structure REST APIs and stateful React components.",
+      "videoUrl": "https://www.youtube.com/embed/7CqJlxBYj-M",
+      "videoDuration": "40 mins",
+      "syllabus": [
+        "Express REST Server Setup & Routing",
+        "MongoDB Schemas & Mongoose Models",
+        "React Hooks State & Custom Hooks",
+        "JWT Authentication & Protected API Middleware"
+      ],
+      "viewsCount": 85,
+      "doubts": [
+        {
+          "id": 205,
+          "studentName": "Hemanth",
+          "studentAvatar": "HM",
+          "question": "Where should JWT tokens be stored on the client side for maximum security?",
+          "createdAt": "2026-11-07 18:30",
+          "status": "answered",
+          "replies": [
+            {
+              "id": 305,
+              "authorName": "Raghava (Mentor)",
+              "isMentor": true,
+              "text": "For production, httpOnly Secure cookies are the gold standard because JavaScript cannot access them (protecting from XSS attacks). For student projects, localStorage works well for rapid prototyping.",
+              "createdAt": "2026-11-07 19:15"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "skillName": "Portrait & Event Photography Basics",
+      "studentName": "Kavya",
+      "category": "Photography",
+      "level": "Intermediate",
+      "description": "Learn manual camera exposure (ISO, aperture, shutter speed), natural lighting techniques, and Lightroom photo post-processing.",
+      "videoUrl": "https://www.youtube.com/embed/V7z7BAZdt2M",
+      "videoDuration": "18 mins",
+      "syllabus": [
+        "The Exposure Triangle: Aperture, Shutter & ISO",
+        "Depth of Field & Bokeh Control",
+        "Natural Golden Hour Portraits",
+        "Lightroom Color Grading Essentials"
+      ],
+      "viewsCount": 38,
+      "doubts": []
+    },
+    {
+      "id": 6,
+      "skillName": "Startup Pitch Decks & Business Models",
+      "studentName": "Vikram",
+      "category": "Business",
+      "level": "Advanced",
+      "description": "How to design compelling pitch decks, calculate unit economics, and prepare presentations for campus startup competitions.",
+      "videoUrl": "https://www.youtube.com/embed/Xv4b24g_m3o",
+      "videoDuration": "22 mins",
+      "syllabus": [
+        "Problem-Solution Fit & Market Sizing",
+        "10-Slide Pitch Deck Structure",
+        "Customer Acquisition Cost (CAC) vs Lifetime Value (LTV)",
+        "Presentation Delivery & Investor Q&A Mastery"
+      ],
+      "viewsCount": 44,
+      "doubts": []
+    }
+  ],
+  "requests": [
+    {
+      "id": 1,
+      "studentName": "Raghava",
+      "skillNeeded": "React.js Advanced State & Redux",
+      "createdAt": "2026-11-05"
+    },
+    {
+      "id": 2,
+      "studentName": "Meera",
+      "skillNeeded": "Python Data Analysis with Pandas",
+      "createdAt": "2026-11-05"
+    },
+    {
+      "id": 3,
+      "studentName": "Mahith",
+      "skillNeeded": "Modern UI Design Systems",
+      "createdAt": "2026-11-06"
+    },
+    {
+      "id": 4,
+      "studentName": "Ananya",
+      "skillNeeded": "Mobile App Development with Flutter",
+      "createdAt": "2026-11-07"
+    }
+  ],
+  "profile": {
+    "name": "Raghava",
+    "skillsOffered": 1,
+    "skillsLearning": 1
+  },
+  "users": [
+    {
+      "id": 1,
+      "name": "Raghava",
+      "email": "raghava@campus.edu",
+      "password": "password123",
+      "role": "student",
+      "about": "Passionate CS student building full-stack web platforms and helping peers.",
+      "major": "Computer Science",
+      "year": "3nd Year",
+      "skillsMastered": [
+        "React",
+        "Node",
+        "CSS Grid"
+      ],
+      "skillsLearningList": [
+        "Next.js",
+        "TypeScript"
+      ],
+      "github": "https://github.com/raghava",
+      "linkedin": "https://linkedin.com/in/raghava",
+      "skillsOffered": 1,
+      "skillsLearning": 1,
+      "joinedAt": "2026-11-05"
+    },
+    {
+      "id": "admin-1",
+      "name": "Admin Officer",
+      "email": "admin@campus.edu",
+      "password": "admin123",
+      "role": "admin",
+      "skillsOffered": 0,
+      "skillsLearning": 0,
+      "joinedAt": "2026-11-01"
+    },
+    {
+      "id": 2,
+      "name": "Sarah",
+      "email": "sarah@campus.edu",
+      "password": "password123",
+      "role": "student",
+      "skillsOffered": 1,
+      "skillsLearning": 0,
+      "joinedAt": "2026-11-02"
+    },
+    {
+      "id": 3,
+      "name": "Hemanth",
+      "email": "hemanth@campus.edu",
+      "password": "password123",
+      "role": "student",
+      "skillsOffered": 1,
+      "skillsLearning": 0,
+      "joinedAt": "2026-11-03"
+    },
+    {
+      "id": 4,
+      "name": "Arjun",
+      "email": "arjun@campus.edu",
+      "password": "password123",
+      "role": "student",
+      "skillsOffered": 1,
+      "skillsLearning": 0,
+      "joinedAt": "2026-11-04"
+    }
+  ],
+  "connections": [
+    {
+      "id": 101,
+      "skillId": 2,
+      "skillName": "UI/UX Design in Figma & Prototyping",
+      "mentorName": "Sarah",
+      "studentName": "Raghava",
+      "studentEmail": "raghava@campus.edu",
+      "message": "Hi Sarah! I'm building a student project and would love your guidance on creating Figma components and tokens.",
+      "contactPreference": "Email & Campus Chat",
+      "status": "accepted",
+      "createdAt": "2026-11-07"
+    },
+    {
+      "id": 102,
+      "skillId": 1,
+      "skillName": "HTML & CSS Responsive Web Design",
+      "mentorName": "Hemanth",
+      "studentName": "Meera",
+      "studentEmail": "meera@campus.edu",
+      "message": "Hey Hemanth, could you review my personal portfolio CSS Grid layout when you're free?",
+      "contactPreference": "Discord",
+      "status": "pending",
+      "createdAt": "2026-11-08"
+    }
+  ],
+  "systemLogs": [
+    {
+      "id": 1794130793197,
+      "type": "auth",
+      "studentName": "Admin Officer",
+      "message": "Admin Officer signed into the Admin Portal",
+      "timestamp": "8/11/2026, 3:09:53 pm"
+    },
+    {
+      "id": 1794130753664,
+      "type": "auth",
+      "studentName": "Raghava",
+      "message": "Raghava signed into the Student Portal",
+      "timestamp": "8/11/2026, 3:09:13 pm"
+    },
+    {
+      "id": 1794129733504,
+      "type": "auth",
+      "studentName": "Raghava",
+      "message": "Raghava signed into the Student Portal",
+      "timestamp": "8/11/2026, 2:52:13 pm"
+    },
+    {
+      "id": 1794129595843,
+      "type": "profile_update",
+      "studentName": "Raghava",
+      "message": "Raghava updated their About Profile bio and information",
+      "timestamp": "8/11/2026, 2:49:55 pm"
+    },
+    {
+      "id": 1794129537876,
+      "type": "auth",
+      "studentName": "Raghava",
+      "message": "Raghava signed into the Student Portal",
+      "timestamp": "8/11/2026, 2:48:57 pm"
+    },
+    {
+      "id": 1794129428274,
+      "type": "profile_update",
+      "studentName": "Raghava",
+      "message": "Raghava updated their About Profile bio and information",
+      "timestamp": "8/11/2026, 2:47:08 pm"
+    },
+    {
+      "id": 1794129428222,
+      "type": "doubt",
+      "studentName": "Raghava",
+      "message": "Raghava asked a question to Hemanth on \"HTML & CSS Responsive Web Design\"",
+      "timestamp": "8/11/2026, 2:47:08 pm"
+    },
+    {
+      "id": 1794128688811,
+      "type": "reply",
+      "message": "Raghava answered doubt on \"HTML & CSS Responsive Web Design\"",
+      "timestamp": "8/11/2026, 2:34:48 pm"
+    },
+    {
+      "id": 1794128667256,
+      "type": "video_view",
+      "message": "Student watched video lesson for \"HTML & CSS Responsive Web Design\"",
+      "timestamp": "8/11/2026, 2:34:27 pm"
+    },
+    {
+      "id": 1794128509173,
+      "type": "reply",
+      "message": "Hemanth (Mentor) answered doubt on \"HTML & CSS Responsive Web Design\"",
+      "timestamp": "8/11/2026, 2:31:49 pm"
+    },
+    {
+      "id": 1794128509117,
+      "type": "doubt",
+      "message": "Raghava asked a doubt on \"HTML & CSS Responsive Web Design\": \"How do CSS Grid areas work with responsive de...\"",
+      "timestamp": "8/11/2026, 2:31:49 pm"
+    },
+    {
+      "id": 1,
+      "type": "skill",
+      "message": "HTML & CSS Responsive Web Design published with video by Hemanth",
+      "timestamp": "2026-11-05 09:30"
+    },
+    {
+      "id": 2,
+      "type": "doubt",
+      "message": "Raghava asked a doubt on HTML & CSS: 'When to use Grid vs Flexbox?'",
+      "timestamp": "2026-11-06 14:20"
+    },
+    {
+      "id": 3,
+      "type": "reply",
+      "message": "Hemanth answered Raghava's doubt on HTML & CSS",
+      "timestamp": "2026-11-06 15:05"
+    },
+    {
+      "id": 4,
+      "type": "connect",
+      "message": "Raghava sent a mentorship request to Sarah",
+      "timestamp": "2026-11-07 16:40"
+    },
+    {
+      "id": 5,
+      "type": "video_view",
+      "message": "Sarah's Figma Prototyping lesson watched by student",
+      "timestamp": "2026-11-08 12:15"
+    }
+  ],
+  "announcement": {
+    "text": "🎉 New: Video Lessons & Interactive Q&A Classroom are now live! Sign in to watch lessons, ask doubts beside videos, and share your own skills in video format.",
+    "active": true
+  }
+}

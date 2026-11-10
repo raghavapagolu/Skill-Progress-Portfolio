@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Skill Exchange | Student Learning & Video Classroom</title>
+  
+  <!-- Modern Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Dynamic Platform Announcement Banner -->
+  <div id="announcement-banner" class="announcement-bar hidden">
+    <div class="announcement-content">
+      <span class="badge"><i class="fa-solid fa-bullhorn"></i> Campus Notice</span>
+      <span id="announcement-text">Welcome to Campus Skill Exchange! Sign in to share knowledge, watch video lessons, and chat with mentors.</span>
+    </div>
+    <button id="btn-close-announcement" class="announcement-close" title="Dismiss">&times;</button>
+  </div>
+
+  <!-- Global Student Navigation Bar -->
+  <nav class="main-nav-container">
+    <div class="nav-wrapper">
+      <div class="brand-logo" id="brand-logo-btn">
+        <div class="brand-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="brand-text">
+          <h1>SkillExchange</h1>
+          <span>Student Knowledge & Video Hub</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links: Only Dashboard visible before login; other tabs unlocked after sign-in -->
+      <ul class="nav-links">
+        <li>
+          <button class="nav-btn active" data-tab="dashboard">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+          </button>
+        </li>
+        <li class="nav-student-only hidden">
+          <button class="nav-btn" data-tab="marketplace">
+            <i class="fa-solid fa-compass"></i>
+            <span>Marketplace</span>
+          </button>
+        </li>
+        <li class="nav-student-only hidden">
+          <button class="nav-btn" data-tab="offer" id="nav-btn-offer">
+            <i class="fa-solid fa-video"></i>
+            <span>Offer Skills & Video</span>
+          </button>
+        </li>
+        <li class="nav-student-only hidden">
+          <button class="nav-btn" data-tab="requests" id="nav-btn-requests">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>Request Skills</span>
+          </button>
+        </li>
+        <li class="nav-student-only hidden">
+          <button class="nav-btn" data-tab="activities" id="nav-btn-activities">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Activities Portal</span>
+          </button>
+        </li>
+        <li class="nav-student-only hidden">
+          <button class="nav-btn" data-tab="profile" id="nav-btn-profile">
+            <i class="fa-solid fa-id-badge"></i>
+            <span>About Profile</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- User Auth State Bar in Nav: Top-Right Corner -->
+      <div class="nav-auth-actions">
+        <!-- Logged Out View (Shown before login) -->
+        <div id="nav-auth-logged-out">
+          <button class="btn-sign-in-trigger" id="btn-open-auth-modal">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <span>Sign In</span>
+          </button>
+        </div>
+
+        <!-- Logged In View (Shown ONLY after student signs in) -->
+        <div id="nav-auth-logged-in" class="hidden">
+          <div class="user-nav-chip" id="nav-user-chip" title="View Profile">
+            <div class="user-avatar-mini" id="nav-user-avatar">ST</div>
+            <div class="user-nav-meta">
+              <span class="chip-name" id="nav-user-name">Student</span>
+              <span class="chip-role" id="nav-user-role">Student Member</span>
+            </div>
+            <button class="btn-sign-out-mini" id="btn-quick-signout" title="Sign Out">
+              <i class="fa-solid fa-power-off"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section" id="hero-banner-section">
+    <div class="hero-container">
+      <div class="hero-pill-badge">
+        <i class="fa-solid fa-video"></i>
+        <span>Video Lessons • Peer Mentorship • Live Doubts Chat</span>
+      </div>
+      <h1 class="hero-title">
+        Learn Skills with Video Lessons. <br>
+        <span class="gradient-text">Chat Doubts & Teach Peers on Campus.</span>
+      </h1>
+      <p class="hero-description">
+        Watch hands-on video tutorials uploaded by fellow students, chat with mentors to clarify doubts directly beside each video, 
+        and share your own knowledge by uploading video lessons!
+      </p>
+      <div class="hero-actions">
+        <!-- Unauthenticated Call to Action -->
+        <div id="hero-guest-actions">
+          <button class="btn-hero-primary" id="btn-hero-signin">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <span>Sign In to Access Marketplace & Lessons</span>
+          </button>
+        </div>
+        <!-- Authenticated Call to Action -->
+        <div id="hero-logged-actions" class="hidden" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <button class="btn-hero-primary" id="btn-hero-explore">
+            <i class="fa-solid fa-play-circle"></i>
+            <span>Explore Video Lessons</span>
+          </button>
+          <button class="btn-hero-secondary" id="btn-hero-offer">
+            <i class="fa-solid fa-video"></i>
+            <span>Teach & Upload Video</span>
+          </button>
+          <button class="btn-hero-secondary" id="btn-hero-request">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>Post Learning Request</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Tabs Container -->
+  <main class="main-content">
+
+    <!-- ==========================================
+         TAB 1: DASHBOARD (Publicly Accessible)
+         ========================================== -->
+    <section id="section-dashboard" class="tab-content">
+      <div class="section-header-block">
+        <div>
+          <h2>Student Knowledge & Video Pulse</h2>
+          <p>Real-time overview of video tutorials, student mentors, peer inquiries, and doubt discussions.</p>
+        </div>
+        <div>
+          <button class="btn-hero-secondary" id="btn-refresh-stats" style="padding: 8px 16px; font-size: 13.5px;">
+            <i class="fa-solid fa-rotate-right"></i> Refresh Stats
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Stat Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon-box skills">
+            <i class="fa-solid fa-film"></i>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-value" id="stat-videos">0</span>
+            <span class="kpi-label">Video Lessons</span>
+            <span class="kpi-subtext">Uploaded by student mentors</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-box connections">
+            <i class="fa-solid fa-comments"></i>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-value" id="stat-doubts">0</span>
+            <span class="kpi-label">Doubts & Questions</span>
+            <span class="kpi-subtext">Asked & answered beside videos</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-box students">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-value" id="stat-students">0</span>
+            <span class="kpi-label">Active Students</span>
+            <span class="kpi-subtext">Community learners & mentors</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-box requests">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-value" id="stat-requests">0</span>
+            <span class="kpi-label">Learning Requests</span>
+            <span class="kpi-subtext">Skills students want to learn</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills Strip -->
+      <div class="category-filter-strip" id="dashboard-cat-pills">
+        <button class="cat-pill-btn active" data-cat="all">
+          <i class="fa-solid fa-layer-group"></i> All Domains
+        </button>
+        <button class="cat-pill-btn" data-cat="Programming">
+          <i class="fa-solid fa-code"></i> Programming
+        </button>
+        <button class="cat-pill-btn" data-cat="Design">
+          <i class="fa-solid fa-palette"></i> UI/UX Design
+        </button>
+        <button class="cat-pill-btn" data-cat="Video Editing">
+          <i class="fa-solid fa-film"></i> Video Editing
+        </button>
+        <button class="cat-pill-btn" data-cat="Photography">
+          <i class="fa-solid fa-camera"></i> Photography
+        </button>
+        <button class="cat-pill-btn" data-cat="Business">
+          <i class="fa-solid fa-chart-line"></i> Business
+        </button>
+      </div>
+
+      <!-- 2-Column Dashboard Spotlight -->
+      <div class="dashboard-grid-2col">
+        <!-- Spotlight Skills with Videos -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3><i class="fa-solid fa-play" style="color:#ef4444;"></i> Featured Video Lessons & Tutorials</h3>
+            <button class="btn-action-sm" id="btn-see-all-skills">View All Lessons &rarr;</button>
+          </div>
+          <div id="dashboard-spotlight-skills" class="skills-grid" style="grid-template-columns: 1fr;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Recent Campus Learning Requests -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3><i class="fa-solid fa-clock-rotate-left" style="color:#0ea5e9;"></i> Live Requests Feed</h3>
+            <button class="btn-action-sm" id="btn-see-all-requests">Post Request &rarr;</button>
+          </div>
+          <div id="dashboard-recent-requests" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- How Skill Video Learning & Doubts Work -->
+      <div class="steps-row">
+        <div class="step-card">
+          <span class="step-number">1</span>
+          <div class="step-icon"><i class="fa-solid fa-lock-open"></i></div>
+          <h4>Sign In for Full Access</h4>
+          <p>Signing in as a student unlocks the skill catalog, video classrooms, doubts chat, and peer mentorship requests.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">2</span>
+          <div class="step-icon"><i class="fa-solid fa-comments"></i></div>
+          <h4>Watch & Chat Doubts</h4>
+          <p>Watch video lessons and chat directly with the student instructor beside the video to clear your doubts instantly.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">3</span>
+          <div class="step-icon"><i class="fa-solid fa-video"></i></div>
+          <h4>Teach & Upload Videos</h4>
+          <p>Add your own skills with video links, manage questions from peers, and customize your personal student profile.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 2: SKILL MARKETPLACE & VIDEO LESSONS (Unlocked upon login)
+         ========================================== -->
+    <section id="section-marketplace" class="tab-content hidden">
+      <div class="section-header-block">
+        <div>
+          <h2>Skill Marketplace & Video Catalog</h2>
+          <p>Explore lessons taught by fellow students. Watch tutorials, ask doubts in the live chat, and request mentorship!</p>
+        </div>
+      </div>
+
+      <!-- Search & Filters Toolbar -->
+      <div class="marketplace-toolbar">
+        <div class="search-field-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="search-input" type="text" placeholder="Search skills, video topics, or mentor names...">
+        </div>
+
+        <select id="category-filter" class="filter-select">
+          <option value="All Categories">All Categories</option>
+          <option value="Programming">Programming</option>
+          <option value="Design">UI/UX Design</option>
+          <option value="Video Editing">Video Editing</option>
+          <option value="Photography">Photography</option>
+          <option value="Business">Business</option>
+        </select>
+
+        <select id="level-filter" class="filter-select">
+          <option value="All Levels">All Levels</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+
+      <!-- Skills Cards Grid -->
+      <div id="skills-container" class="skills-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 3: OFFER SKILLS & UPLOAD VIDEO (Unlocked upon login)
+         ========================================== -->
+    <section id="section-offer" class="tab-content hidden">
+      <div class="section-header-block">
+        <div>
+          <h2>Teach Others: Upload Skills with Video Lessons</h2>
+          <p>Share your knowledge by adding your skills along with video tutorials so other students can learn from you!</p>
+        </div>
+      </div>
+
+      <div class="form-layout-2col">
+        <div class="form-card">
+          <form id="offer-skill-form">
+            <div class="form-group">
+              <label for="offer-student-name">Your Student Name <span>(Authenticated Mentor)</span></label>
+              <input id="offer-student-name" class="form-control" type="text" readonly required>
+            </div>
+
+            <div class="form-group">
+              <label for="offer-skill-name">Skill or Course Title</label>
+              <input id="offer-skill-name" class="form-control" type="text" placeholder="e.g. Next.js App Router Masterclass, Figma Auto-Layout" required>
+            </div>
+
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="offer-category">Domain Category</label>
+                <select id="offer-category" class="form-control">
+                  <option value="Programming">Programming</option>
+                  <option value="Design">UI/UX Design</option>
+                  <option value="Video Editing">Video Editing</option>
+                  <option value="Photography">Photography</option>
+                  <option value="Business">Business</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="offer-level">Proficiency Level</label>
+                <select id="offer-level" class="form-control">
+                  <option value="Beginner">Beginner (Fundamentals)</option>
+                  <option value="Intermediate">Intermediate (Project-ready)</option>
+                  <option value="Advanced">Advanced (Expert mastery)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Video Upload / Embed Section -->
+            <div class="form-group" style="background: #fdf2f8; border: 1px solid #fbcfe8; padding: 18px; border-radius: var(--radius-md);">
+              <label for="offer-video-url" style="color: #9d174d; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-video"></i> Video Lesson Embed Link or Direct URL
+              </label>
+              <input id="offer-video-url" class="form-control" type="url" placeholder="Paste YouTube link (e.g. https://youtu.be/... or https://www.youtube.com/embed/...), Vimeo, or MP4" required>
+              <small style="font-size: 12px; color: #9d174d; margin-top: 6px; display: block;">
+                <i class="fa-solid fa-circle-info"></i> Students watching your lesson can ask doubts and chat with you directly beside the video player.
+              </small>
+            </div>
+
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="offer-video-duration">Approximate Lesson Duration</label>
+                <input id="offer-video-duration" class="form-control" type="text" placeholder="e.g. 25 mins, 45 mins" value="25 mins">
+              </div>
+
+              <div class="form-group">
+                <label for="offer-syllabus">Key Topics / Syllabus (One per line)</label>
+                <textarea id="offer-syllabus" class="form-control" rows="3" placeholder="1. Core Concepts&#10;2. Step-by-Step Hands-On&#10;3. Real-world Project Implementation"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="offer-description">Course Description & How You'll Help with Doubts</label>
+              <textarea id="offer-description" class="form-control" placeholder="Explain what students will learn in this video lesson and that you will chat to clarify doubts..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit-action">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Publish Skill & Video Lesson
+            </button>
+          </form>
+        </div>
+
+        <!-- Pro Tips Sidebar -->
+        <div class="sidebar-tips-card">
+          <h4><i class="fa-solid fa-video"></i> Video Teaching Tips</h4>
+          <ul class="tips-list">
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Live Doubts Chat:</strong> Students watching your video can chat with you directly beside the player. You can answer their doubts anytime!</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Embed Any Source:</strong> Supports YouTube embed URLs, YouTube watch links, Loom tutorials, Vimeo, or direct MP4 links.</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Clear Syllabus:</strong> Listing 3-4 bullet topics helps peers immediately understand your teaching structure.</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Boost Your Portfolio:</strong> Teaching others showcases technical leadership and subject mastery.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 4: REQUEST SKILLS (Unlocked upon login)
+         ========================================== -->
+    <section id="section-requests" class="tab-content hidden">
+      <div class="section-header-block">
+        <div>
+          <h2>Student Learning Requests</h2>
+          <p>Looking for someone to teach you a skill? Post your request so peer mentors can connect with you.</p>
+        </div>
+      </div>
+
+      <div class="form-card" style="max-width: 800px; margin-bottom: 36px;">
+        <h3 style="font-size: 18px; margin-bottom: 16px;"><i class="fa-solid fa-pen-nib" style="color:var(--primary);"></i> Submit a Learning Request</h3>
+        <form id="request-skill-form">
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label for="request-student-name">Your Student Name</label>
+              <input id="request-student-name" class="form-control" type="text" readonly required>
+            </div>
+            <div class="form-group">
+              <label for="request-skill-name">Skill / Topic You Wish to Learn</label>
+              <input id="request-skill-name" class="form-control" type="text" placeholder="e.g. Docker Containers, Figma Auto-layout, SQL Joins" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit-action" style="max-width: 280px;">
+            <i class="fa-solid fa-paper-plane"></i> Submit Learning Request
+          </button>
+        </form>
+      </div>
+
+      <!-- Public List of All Requests -->
+      <div class="panel-card">
+        <div class="panel-card-header">
+          <h3><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> Current Campus Learning Requests</h3>
+          <span style="font-size: 13px; color: var(--text-muted);" id="requests-count-badge">0 requests</span>
+        </div>
+        <div id="requests-container" class="requests-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 5: ACTIVITIES PORTAL (NEW - Unlocked upon login)
+         ========================================== -->
+    <section id="section-activities" class="tab-content hidden">
+      <div class="section-header-block">
+        <div>
+          <h2>Student Activities Portal</h2>
+          <p>Complete record of your campus learning journey: videos watched, doubts chatted with mentors, skills offered, and requests.</p>
+        </div>
+        <button class="btn-hero-secondary" id="btn-refresh-activities" style="padding:8px 16px; font-size:13px;">
+          <i class="fa-solid fa-rotate-right"></i> Refresh Activities
+        </button>
+      </div>
+
+      <!-- Activities Metric Counters -->
+      <div class="activities-grid-summary">
+        <div class="activity-summary-box">
+          <div class="activity-summary-icon" style="background:#fee2e2; color:#ef4444;"><i class="fa-solid fa-video"></i></div>
+          <div>
+            <h3 id="act-stat-videos" style="font-size:22px; font-weight:800;">0</h3>
+            <span style="font-size:12.5px; color:var(--text-secondary);">Video Lessons Watched</span>
+          </div>
+        </div>
+
+        <div class="activity-summary-box">
+          <div class="activity-summary-icon" style="background:#e0e7ff; color:#4f46e5;"><i class="fa-solid fa-comments"></i></div>
+          <div>
+            <h3 id="act-stat-doubts" style="font-size:22px; font-weight:800;">0</h3>
+            <span style="font-size:12.5px; color:var(--text-secondary);">Doubts & Chats Sent</span>
+          </div>
+        </div>
+
+        <div class="activity-summary-box">
+          <div class="activity-summary-icon" style="background:#f0fdf4; color:#10b981;"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div>
+            <h3 id="act-stat-offered" style="font-size:22px; font-weight:800;">0</h3>
+            <span style="font-size:12.5px; color:var(--text-secondary);">Skills & Videos Offered</span>
+          </div>
+        </div>
+
+        <div class="activity-summary-box">
+          <div class="activity-summary-icon" style="background:#fffbeb; color:#f59e0b;"><i class="fa-solid fa-lightbulb"></i></div>
+          <div>
+            <h3 id="act-stat-requests" style="font-size:22px; font-weight:800;">0</h3>
+            <span style="font-size:12.5px; color:var(--text-secondary);">Learning Requests Made</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chronological Activity Timeline -->
+      <div class="panel-card">
+        <div class="panel-card-header">
+          <h3><i class="fa-solid fa-timeline" style="color:var(--primary);"></i> Your Activity Log</h3>
+          <span style="font-size:12.5px; color:var(--text-muted);" id="activities-count-tag">0 total events</span>
+        </div>
+        <div id="activities-timeline-container" class="activities-timeline-stream">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 6: ABOUT PROFILE & USER PORTFOLIO (Unlocked upon login)
+         ========================================== -->
+    <section id="section-profile" class="tab-content hidden">
+      <div class="profile-shell">
+        <!-- Modern Visual Header Cover Banner -->
+        <div class="profile-banner">
+          <div class="profile-banner-badge">
+            <i class="fa-solid fa-graduation-cap"></i> Student Creator & Mentorship Portfolio
+          </div>
+        </div>
+
+        <!-- Student Profile Head Bar -->
+        <div class="profile-head-content">
+          <div class="profile-user-left">
+            <div class="profile-avatar-large" id="profile-avatar">
+              ST
+              <div class="profile-avatar-status-dot" title="Active Campus Peer"></div>
+            </div>
+            <div class="profile-user-details">
+              <h3 id="profile-name">
+                Student Name 
+                <i class="fa-solid fa-circle-check profile-verified-icon" title="Verified Campus Student"></i>
+              </h3>
+              <p class="profile-email-line">
+                <i class="fa-solid fa-envelope" style="color:var(--text-muted); font-size:12px;"></i>
+                <span id="profile-email">student@campus.edu</span>
+              </p>
+              <div class="profile-badges-row">
+                <span class="profile-meta-badge role" id="profile-role-tag">
+                  <i class="fa-solid fa-shield-halved"></i> Verified Student Member
+                </span>
+                <span class="profile-meta-badge dept" id="badge-dept">
+                  <i class="fa-solid fa-building-columns"></i> <span id="badge-dept-text">Computer Science</span>
+                </span>
+                <span class="profile-meta-badge year" id="badge-year">
+                  <i class="fa-solid fa-user-graduate"></i> <span id="badge-year-text">3rd Year</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-actions-bar">
+            <button type="button" class="btn-save-profile-primary" id="btn-save-about-profile">
+              <i class="fa-solid fa-floppy-disk"></i> Save Changes
+            </button>
+            <button type="button" class="btn-signout-outline" id="btn-profile-signout">
+              <i class="fa-solid fa-power-off"></i> Sign Out
+            </button>
+          </div>
+        </div>
+
+        <!-- 4-Stat High Impact Metric Bar -->
+        <div class="profile-metrics-strip">
+          <div class="profile-metric-box">
+            <div class="metric-icon-bubble" style="background:#eef2ff; color:#4f46e5;">
+              <i class="fa-solid fa-video"></i>
+            </div>
+            <div>
+              <div class="metric-num" id="profile-offered-count">0</div>
+              <div class="metric-name">Videos & Skills Offered</div>
+            </div>
+          </div>
+
+          <div class="profile-metric-box">
+            <div class="metric-icon-bubble" style="background:#f0fdf4; color:#10b981;">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <div>
+              <div class="metric-num" id="profile-skills-count">0</div>
+              <div class="metric-name">Skills Mastered</div>
+            </div>
+          </div>
+
+          <div class="profile-metric-box">
+            <div class="metric-icon-bubble" style="background:#fffbeb; color:#f59e0b;">
+              <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <div>
+              <div class="metric-num" id="profile-learning-count">0</div>
+              <div class="metric-name">Learning Requests</div>
+            </div>
+          </div>
+
+          <div class="profile-metric-box">
+            <div class="metric-icon-bubble" style="background:#fdf2f8; color:#ec4899;">
+              <i class="fa-solid fa-handshake"></i>
+            </div>
+            <div>
+              <div class="metric-num" id="profile-inquiries-count">0</div>
+              <div class="metric-name">Peer Inquiries</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customizable "About User" Profile Card -->
+        <div class="profile-about-wrap">
+          <div class="profile-about-card">
+            <div class="profile-card-header">
+              <div class="profile-card-title">
+                <div class="profile-title-icon">
+                  <i class="fa-solid fa-id-card"></i>
+                </div>
+                <div>
+                  <h3>About User Profile</h3>
+                  <p>Customize your bio, academic focus, mastered topics, and contact links for campus peers</p>
+                </div>
+              </div>
+              <button type="button" class="btn-save-profile-primary" id="btn-save-about-profile-bottom">
+                <i class="fa-solid fa-floppy-disk"></i> Save Profile
+              </button>
+            </div>
+
+            <form id="about-profile-form" class="profile-form-grid">
+              <div class="form-group full-width">
+                <label for="about-user-bio"><i class="fa-solid fa-quote-left" style="color:var(--primary);"></i> About Me / Bio</label>
+                <textarea id="about-user-bio" class="form-control" rows="3" placeholder="Tell fellow students about your academic interests, coding journey, and what skills you love sharing..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="about-user-major"><i class="fa-solid fa-building-columns" style="color:#6366f1;"></i> Major / Department</label>
+                <input id="about-user-major" class="form-control" type="text" placeholder="e.g. Computer Science & Engineering">
+              </div>
+
+              <div class="form-group">
+                <label for="about-user-year"><i class="fa-solid fa-graduation-cap" style="color:#ec4899;"></i> Academic Year</label>
+                <input id="about-user-year" class="form-control" type="text" placeholder="e.g. 3rd Year (Junior)">
+              </div>
+
+              <div class="form-group">
+                <label for="about-user-mastered"><i class="fa-solid fa-star" style="color:#f59e0b;"></i> Skills Mastered (Comma-separated)</label>
+                <input id="about-user-mastered" class="form-control" type="text" placeholder="e.g. React, Node, CSS Grid, Python">
+                <div class="tag-chips-wrap" id="chips-mastered-preview"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="about-user-learning"><i class="fa-solid fa-compass" style="color:#10b981;"></i> Skills Currently Learning (Comma-separated)</label>
+                <input id="about-user-learning" class="form-control" type="text" placeholder="e.g. Next.js, TypeScript, Docker, AI">
+                <div class="tag-chips-wrap" id="chips-learning-preview"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="about-user-github"><i class="fa-brands fa-github"></i> GitHub Profile Link</label>
+                <input id="about-user-github" class="form-control" type="url" placeholder="https://github.com/yourusername">
+              </div>
+
+              <div class="form-group">
+                <label for="about-user-linkedin"><i class="fa-brands fa-linkedin" style="color:#0284c7;"></i> LinkedIn Profile Link</label>
+                <input id="about-user-linkedin" class="form-control" type="url" placeholder="https://linkedin.com/in/yourusername">
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Lists of My Items -->
+        <div class="profile-tab-sections">
+          <!-- Skills Offered by Me -->
+          <div class="profile-sub-col">
+            <h4>
+              <span><i class="fa-solid fa-video" style="color:var(--primary);"></i> Your Video Lessons & Skills</span>
+              <button class="btn-action-sm" id="btn-profile-add-skill">+ Offer New</button>
+            </h4>
+            <div id="profile-my-skills-list"></div>
+          </div>
+
+          <!-- Learning Requests Posted by Me -->
+          <div class="profile-sub-col">
+            <h4>
+              <span><i class="fa-solid fa-lightbulb" style="color:#f59e0b;"></i> Your Learning Requests</span>
+              <button class="btn-action-sm" id="btn-profile-add-request">+ New Request</button>
+            </h4>
+            <div id="profile-my-requests-list"></div>
+          </div>
+        </div>
+
+        <!-- Direct Mentorship Inquiries Received/Sent -->
+        <div style="padding: 0 32px 32px;">
+          <h4 style="font-size: 17px; font-weight:700; margin-bottom: 16px;">
+            <i class="fa-solid fa-comments" style="color:#0ea5e9;"></i> Direct Mentorship Connections & Inquiries
+          </h4>
+          <div id="profile-my-connections-list"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODALS
+       ========================================== -->
+
+  <!-- Interactive Video Classroom & Live Doubts Chat Messenger Modal -->
+  <div id="modal-classroom" class="modal-backdrop hidden">
+    <div class="modal-classroom-window">
+      <!-- Classroom Header -->
+      <div class="classroom-header">
+        <div class="classroom-header-info">
+          <div class="brand-icon" style="width:36px; height:36px; font-size:16px;">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <div>
+            <h3 id="classroom-skill-title">Skill Video Lesson</h3>
+            <span id="classroom-mentor-name">Taught by Peer Mentor</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-classroom-modal">&times;</button>
+      </div>
+
+      <!-- Classroom Split Body: Video on Left, Live Doubts Chat on Right -->
+      <div class="classroom-split-body">
+        
+        <!-- Left Panel: Video Player & Syllabus -->
+        <div class="classroom-video-panel">
+          <div class="video-player-frame-box">
+            <iframe id="classroom-video-frame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+
+          <div class="video-meta-bar">
+            <div class="video-mentor-chip">
+              <span class="badge-tag video-tag" id="classroom-video-duration">
+                <i class="fa-regular fa-clock"></i> 25 mins
+              </span>
+              <span class="badge-tag" id="classroom-category-badge" style="background:#eef2ff; color:#4f46e5;">
+                Programming
+              </span>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="video-views-badge">
+                <i class="fa-solid fa-eye"></i> <span id="classroom-views-count">0</span> views
+              </span>
+              <button class="btn-action-sm success" id="btn-classroom-request-mentor">
+                <i class="fa-solid fa-handshake"></i> Request 1-on-1 Mentorship
+              </button>
+            </div>
+          </div>
+
+          <p id="classroom-skill-desc" style="font-size:14px; color:var(--text-secondary); line-height:1.6;"></p>
+
+          <!-- Syllabus Checklist -->
+          <div class="classroom-syllabus-card">
+            <h4><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> Topics Covered in this Video Lesson</h4>
+            <div id="classroom-syllabus-list"></div>
+          </div>
+        </div>
+
+        <!-- Right Panel: Live Doubts Chat with the Video Provider Student -->
+        <div class="classroom-doubts-panel">
+          <div class="chat-header-bar">
+            <div class="chat-mentor-info">
+              <span class="chat-online-dot"></span>
+              <div>
+                <strong style="font-size:13.5px;" id="chat-mentor-title">Chat with Student Mentor</strong>
+                <div style="font-size:11px; color:#94a3b8;">Ask questions & clarify doubts in real time</div>
+              </div>
+            </div>
+            <span style="font-size:11px; background:rgba(255,255,255,0.15); padding:2px 8px; border-radius:12px;" id="chat-doubts-counter">0 doubts</span>
+          </div>
+
+          <!-- Chat Messages Scroll Container -->
+          <div class="chat-messages-scroll" id="classroom-chat-scroll">
+            <!-- Messages rendered by JS -->
+          </div>
+
+          <!-- Chat Input Bar -->
+          <form id="form-chat-send" class="chat-input-bar">
+            <input type="text" id="input-chat-message" placeholder="Type your doubt or question to the mentor..." required autocomplete="off">
+            <button type="submit" class="btn-chat-send" title="Send Doubt">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Universal Auth Modal (Sign In as Student or Admin / Register) -->
+  <div id="modal-auth" class="modal-backdrop hidden">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 id="auth-modal-title"><i class="fa-solid fa-right-to-bracket" style="color:var(--primary);"></i> Sign In to SkillExchange</h3>
+        <button class="modal-close-btn" id="btn-close-auth-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Auth Tabs: Student vs Admin vs Register -->
+        <div class="auth-mode-tabs">
+          <button class="auth-mode-tab active" id="modal-tab-signin">Student Sign In</button>
+          <button class="auth-mode-tab" id="modal-tab-admin-signin">Admin Sign In</button>
+          <button class="auth-mode-tab" id="modal-tab-register">Register New Student</button>
+        </div>
+
+        <!-- Sign In Form (Used for both student and admin portal access) -->
+        <form id="modal-signin-form">
+          <input type="hidden" id="signin-portal-type" value="student">
+          <div class="form-group">
+            <label for="signin-username" id="label-signin-user">Student Username or Campus Email</label>
+            <input id="signin-username" class="form-control" type="text" placeholder="Enter your username or campus email" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="signin-password">Password</label>
+            <input id="signin-password" class="form-control" type="password" placeholder="Enter your password" required autocomplete="off">
+          </div>
+          <button type="submit" class="btn-submit-action" id="btn-modal-signin-submit">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to Account
+          </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="modal-register-form" class="hidden">
+          <div class="form-group">
+            <label for="register-name">Full Name</label>
+            <input id="register-name" class="form-control" type="text" placeholder="e.g. Maya Chen" required>
+          </div>
+          <div class="form-group">
+            <label for="register-email">Student Email</label>
+            <input id="register-email" class="form-control" type="email" placeholder="e.g. maya@campus.edu" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password">Create Password</label>
+            <input id="register-password" class="form-control" type="password" placeholder="Choose a secure password" required>
+          </div>
+          <button type="submit" class="btn-submit-action">
+            <i class="fa-solid fa-user-plus"></i> Create Student Account
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direct Skill Connection / Mentorship Inquiry Modal -->
+  <div id="modal-connect" class="modal-backdrop hidden">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-handshake" style="color:var(--primary);"></i> Request Learning Connection</h3>
+        <button class="modal-close-btn" id="btn-close-connect-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="connect-inquiry-form">
+          <input type="hidden" id="connect-skill-id">
+          
+          <div class="form-group">
+            <label>Selected Skill</label>
+            <input id="connect-skill-title" class="form-control" type="text" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Peer Mentor</label>
+            <input id="connect-mentor-name" class="form-control" type="text" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for="connect-contact-pref">Preferred Contact Method</label>
+            <select id="connect-contact-pref" class="form-control">
+              <option value="Campus Email">Campus Email</option>
+              <option value="Discord / Online Voice">Discord / Online Voice</option>
+              <option value="Campus Library In-Person">Campus Library In-Person</option>
+              <option value="WhatsApp / Telegram">WhatsApp / Telegram</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="connect-message">Message to Mentor</label>
+            <textarea id="connect-message" class="form-control" rows="3" placeholder="Introduce yourself, your current level, and what specific concepts you'd like guidance on..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit-action">
+            <i class="fa-solid fa-paper-plane"></i> Send Mentorship Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Footer with Discreet Staff / Admin Link -->
+  <footer class="main-footer">
+    <p>&copy; 2026 Campus Skill Exchange • Empowering Students Through Collaborative Peer Mentorship & Video Lessons</p>
+    <a href="/admin" target="_blank" class="footer-admin-link">
+      <i class="fa-solid fa-shield-halved"></i> Administrator Oversight Portal &rarr;
+    </a>
+  </footer>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
